@@ -15,6 +15,8 @@ class ViewModels @Inject constructor():  ViewModel(){
     var palindromeInput by mutableStateOf("")
     var isPalindromeResult by mutableStateOf<String?>(null)
 
+    fun isNameValid(): Boolean = name.isNotBlank()
+
     fun checkPalindrome() {
         val cleaned = palindromeInput.replace("\\s".toRegex(), "").lowercase()
 

@@ -24,13 +24,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import id.co.mondo.suitmediatest.ui.theme.SuitMediaTestTheme
+import id.co.mondo.suitmediatest.ui.viewmodels.ViewModels
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SecondScreen(navController: NavController) {
+fun SecondScreen(
+    navController: NavController,
+    viewModel: ViewModels = hiltViewModel(navController.getBackStackEntry("MainGraph"))
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -42,7 +47,7 @@ fun SecondScreen(navController: NavController) {
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-
+                        navController.navigate("FirstScreen")
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -71,9 +76,9 @@ fun SecondScreen(navController: NavController) {
                 Text(
                     text = "Welcome",
                     style = MaterialTheme.typography.bodySmall
-                    )
+                )
                 Text(
-                    text = "John Doe",
+                    text = viewModel.name,
                     style = MaterialTheme.typography.titleSmall
                 )
             }
@@ -84,7 +89,7 @@ fun SecondScreen(navController: NavController) {
             )
             Button(
                 onClick = {
-
+                    navController.navigate("ThirdScreen")
                 },
                 colors = ButtonDefaults.buttonColors(
                     MaterialTheme.colorScheme.tertiary

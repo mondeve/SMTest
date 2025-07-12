@@ -8,17 +8,21 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.HiltAndroidApp
 import id.co.mondo.suitmediatest.ui.screen.FirstScreen
 import id.co.mondo.suitmediatest.ui.screen.SecondScreen
+import id.co.mondo.suitmediatest.ui.screen.ThirdScreen
 
 @Composable
 fun SuitMediaNav() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "FirstScreen") {
+    NavHost(navController = navController, startDestination = "FirstScreen", route = "MainGraph") {
         composable("FirstScreen") {
             FirstScreen(navController)
         }
         composable("SecondScreen") {
             SecondScreen(navController)
+        }
+        composable("ThirdScreen") {
+            ThirdScreen(navController)
         }
 
     }

@@ -19,13 +19,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import id.co.mondo.suitmediatest.R
 import id.co.mondo.suitmediatest.ui.Components.CardListUser
 import id.co.mondo.suitmediatest.ui.theme.SuitMediaTestTheme
+import id.co.mondo.suitmediatest.ui.viewmodels.ViewModels
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ThirdScreen() {
+fun ThirdScreen(
+    navController: NavController,
+    viewModel: ViewModels = hiltViewModel(navController.getBackStackEntry("MainGraph"))
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -37,7 +44,7 @@ fun ThirdScreen() {
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-
+                        navController.popBackStack()
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -81,6 +88,7 @@ fun ThirdScreen() {
 @Composable
 fun ThirdScreenPreview() {
     SuitMediaTestTheme {
-        ThirdScreen()
+        val navController = rememberNavController()
+        ThirdScreen(navController)
     }
 }

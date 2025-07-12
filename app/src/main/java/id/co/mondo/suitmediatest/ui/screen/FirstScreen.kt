@@ -45,7 +45,7 @@ import id.co.mondo.suitmediatest.ui.viewmodels.ViewModels
 @Composable
 fun FirstScreen(
     navController: NavController,
-    viewModel: ViewModels = hiltViewModel()
+    viewModel: ViewModels = hiltViewModel(navController.getBackStackEntry("MainGraph"))
 ) {
     val context = LocalContext.current
 
@@ -147,7 +147,11 @@ fun FirstScreen(
             Spacer(modifier = Modifier.padding(8.dp))
             Button(
                 onClick = {
-                    navController.navigate("SecondScreen")
+                    if (viewModel.isNameValid()) {
+                        navController.navigate("SecondScreen")
+                    } else {
+                        Toast.makeText(context, "Please enter your name", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     MaterialTheme.colorScheme.tertiary

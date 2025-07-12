@@ -30,12 +30,12 @@ class ViewModels @Inject constructor(
     var isLoading by mutableStateOf(false)
         private set
 
+    private var currentPage = 1
+
     var isRefreshing by mutableStateOf(false)
         private set
 
-    init {
-        fetchUsers()
-    }
+    var errorMessage by mutableStateOf<String?>(null)
 
     fun fetchUsers() {
         viewModelScope.launch {
@@ -45,12 +45,14 @@ class ViewModels @Inject constructor(
             try {
                 delay(2000L)
                 isLoading = true
-                val response = repository.getUsersList()
+                val response = repository.getUsersList(currentPage)
+                currentPage = if (currentPage == 1) 2 else 1
                 users = response
                 Log.d("API_SUCCESS", "Jumlah user: ${response.size}")
                 Log.d("API_SUCCESS", "Data user: $response")
             } catch (e: Exception) {
                 Log.e("API_ERROR", "Gagal mengambil data: ${e.message}")
+                errorMessage = e.message ?: "Terjadi keslahan"
             } finally {
                 isLoading = false
                 isRefreshing = false

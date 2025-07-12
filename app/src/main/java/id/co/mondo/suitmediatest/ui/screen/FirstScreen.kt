@@ -3,6 +3,7 @@ package id.co.mondo.suitmediatest.ui.screen
 //import androidx.hilt.navigation.compose.hiltViewModel
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -72,6 +73,7 @@ fun FirstScreen(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
+                    .background(Color.White)
             )
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
@@ -83,6 +85,7 @@ fun FirstScreen(
                 placeholder = {
                     Text(text = "Name", color = Color.LightGray)
                 },
+                singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Text
                 ),
@@ -105,6 +108,7 @@ fun FirstScreen(
                 placeholder = {
                     Text(text = "Palindrome", color = Color.LightGray)
                 },
+                singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Text
                 ),

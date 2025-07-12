@@ -8,8 +8,8 @@ class UserRepository @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun getUsersList(): List<UserItem> {
-        return apiService.getUsers().data
+    suspend fun getUsersList(page: Int): List<UserItem> {
+        return apiService.getUsers(page).data
     }
 
 

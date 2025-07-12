@@ -10,4 +10,10 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF2B637B)
 
+val dua = Color(0xFF0F91B5)
+val tiga = Color(0xFF36789D)
 val btn = Color(0xFF2B637B)
+val empat = Color(0xFF3D4971)
+val abu = Color(0xFFBDBDBD)
+
+

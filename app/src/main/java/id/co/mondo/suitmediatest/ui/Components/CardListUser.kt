@@ -1,7 +1,6 @@
 package id.co.mondo.suitmediatest.ui.Components
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,20 +19,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import id.co.mondo.suitmediatest.R
+import coil.compose.AsyncImage
 
 @Composable
 fun CardListUser(
     name: String,
     email: String,
-    @DrawableRes image: Int
+    image: String,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
@@ -46,9 +46,9 @@ fun CardListUser(
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            Image(
-                painter = painterResource(image),
-                contentDescription = "Logo",
+            AsyncImage(
+                model = image,
+                contentDescription = "Avatar",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(100.dp)
@@ -76,9 +76,9 @@ fun CardListUser(
 @Preview(showBackground = true)
 @Composable
 fun CardListUserPreview() {
-    CardListUser(
-        name = "John Doe",
-        email = "john.quincy.adams@examplepetstore.com",
-        image = R.drawable.logosuitmedia
-    )
+//    CardListUser(
+//        name = "John Doe",
+//        email = "john.quincy.adams@examplepetstore.com",
+//        image =
+//    )
 }

@@ -36,6 +36,13 @@ fun SecondScreen(
     navController: NavController,
     viewModel: ViewModels = hiltViewModel(navController.getBackStackEntry("MainGraph"))
 ) {
+
+    val displayText = if (viewModel.nameUser.isNullOrEmpty()) {
+        "Selected User Name"
+    } else {
+        viewModel.nameUser
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -83,7 +90,7 @@ fun SecondScreen(
                 )
             }
             Text(
-                text = "Selected User Name",
+                text = displayText,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )

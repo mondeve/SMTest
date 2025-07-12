@@ -1,13 +1,15 @@
 package id.co.mondo.suitmediatest.ui.screen
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,7 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import id.co.mondo.suitmediatest.R
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import id.co.mondo.suitmediatest.ui.Components.CardListUser
 import id.co.mondo.suitmediatest.ui.theme.SuitMediaTestTheme
 import id.co.mondo.suitmediatest.ui.viewmodels.ViewModels
@@ -33,12 +36,17 @@ fun ThirdScreen(
     navController: NavController,
     viewModel: ViewModels = hiltViewModel(navController.getBackStackEntry("MainGraph"))
 ) {
+
+    val isLoading = viewModel.isLoading
+    val users = viewModel.users
+    val isRefreshing = rememberSwipeRefreshState(isRefreshing = viewModel.isRefreshing)
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Second Screen",
+                        text = "Third Screen",
                         style = MaterialTheme.typography.titleSmall
                     )
                 },
@@ -57,29 +65,43 @@ fun ThirdScreen(
             )
         },
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp)
-                .fillMaxSize(),
+        SwipeRefresh(
+            state = isRefreshing,
+            onRefresh = {
+                viewModel.fetchUsers()
+            }
         ) {
-            val users = listOf(
-                "John Doe" to "john.doe@example.com",
-                "Jane Smith" to "jane.smith@example.com",
-                "Alexander Hamilton" to "alex.ham@example.com"
-            )
-
-            for ((name, email) in users) {
-                CardListUser(
-                    name = name,
-                    email = email,
-                    image = R.drawable.logosuitmedia
+            if (users.isEmpty() && !isLoading) {
+                CircularProgressIndicator()
+            } else if (users.isEmpty()) {
+                Text(
+                    text = "Tidak ada data pengguna",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(16.dp)
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp)
+                        .fillMaxSize(),
+                ) {
+                    items(users) { user ->
+                        CardListUser(
+                            name = "${user.firstName} ${user.lastName}",
+                            email = user.email,
+                            image = user.avatar,
+                            onClick = {
+                                viewModel.nameUser = "${user.firstName} ${user.lastName}"
+                                navController.navigate("SecondScreen")
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
             }
         }
-
     }
 }
 

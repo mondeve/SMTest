@@ -24,11 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import id.co.mondo.suitmediatest.ui.theme.SuitMediaTestTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SecondScreen() {
+fun SecondScreen(navController: NavController) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -62,7 +64,9 @@ fun SecondScreen() {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(start = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp)
             ) {
                 Text(
                     text = "Welcome",
@@ -86,7 +90,8 @@ fun SecondScreen() {
                     MaterialTheme.colorScheme.tertiary
                 ),
                 modifier = Modifier
-                    .fillMaxWidth().padding(horizontal = 8.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
             ) {
                 Text(
                     text = "Choose a User",
@@ -109,6 +114,7 @@ fun SecondScreen() {
 @Composable
 fun SecondScreenPreview() {
     SuitMediaTestTheme {
-        SecondScreen()
+        val navController = rememberNavController()
+        SecondScreen(navController)
     }
 }

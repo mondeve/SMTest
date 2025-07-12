@@ -1,5 +1,7 @@
 package id.co.mondo.suitmediatest.ui.screen
 
+//import androidx.hilt.navigation.compose.hiltViewModel
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,28 +23,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import id.co.mondo.suitmediatest.R
 import id.co.mondo.suitmediatest.ui.theme.SuitMediaTestTheme
+import id.co.mondo.suitmediatest.ui.viewmodels.ViewModels
 
 @Composable
-fun FirstScreen() {
-
-    var name by remember { mutableStateOf("") }
-    var palindrome by remember { mutableStateOf("") }
+fun FirstScreen(
+    navController: NavController,
+    viewModel: ViewModels = hiltViewModel()
+) {
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -54,8 +59,6 @@ fun FirstScreen() {
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
-
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -67,7 +70,6 @@ fun FirstScreen() {
             Image(
                 painter = painterResource(R.drawable.logosuitmedia),
                 contentDescription = "Logo",
-//                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
@@ -75,10 +77,11 @@ fun FirstScreen() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
-                value = name,
+                value = viewModel.name,
                 onValueChange = {
-                    name = it
+                    viewModel.name = it
                 },
+                textStyle = TextStyle(color = Color.White),
                 placeholder = {
                     Text(text = "Name", color = Color.LightGray)
                 },
@@ -96,10 +99,11 @@ fun FirstScreen() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
-                value = palindrome,
+                value = viewModel.palindromeInput,
                 onValueChange = {
-                    palindrome = it
+                    viewModel.palindromeInput = it
                 },
+                textStyle = TextStyle(color = Color.White),
                 placeholder = {
                     Text(text = "Palindrome", color = Color.LightGray)
                 },
@@ -118,7 +122,12 @@ fun FirstScreen() {
             Spacer(modifier = Modifier.height(28.dp))
             Button(
                 onClick = {
-
+                    viewModel.checkPalindrome()
+                    Toast.makeText(
+                        context,
+                        viewModel.isPalindromeResult,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 },
                 colors = ButtonDefaults.buttonColors(
                     MaterialTheme.colorScheme.tertiary
@@ -138,7 +147,7 @@ fun FirstScreen() {
             Spacer(modifier = Modifier.padding(8.dp))
             Button(
                 onClick = {
-
+                    navController.navigate("SecondScreen")
                 },
                 colors = ButtonDefaults.buttonColors(
                     MaterialTheme.colorScheme.tertiary
@@ -163,6 +172,7 @@ fun FirstScreen() {
 @Composable
 fun FirstScreenPreview() {
     SuitMediaTestTheme {
-        FirstScreen()
+        val navController = rememberNavController()
+        FirstScreen(navController)
     }
 }

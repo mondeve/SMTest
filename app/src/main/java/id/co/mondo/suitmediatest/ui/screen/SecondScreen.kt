@@ -54,7 +54,10 @@ fun SecondScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate("FirstScreen")
+                        navController.navigate("FirstScreen"){
+                            popUpTo(0)
+                            launchSingleTop = true
+                        }
                     }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
